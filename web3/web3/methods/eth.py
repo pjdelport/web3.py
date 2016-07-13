@@ -18,8 +18,9 @@ class DefaultAccount(object):
 
 
 class Eth(object):
-    def __init__(self, request_manager):
-        self.request_manager = request_manager
+    def __init__(self, web3):
+        self.web3 = web3
+        self.request_manager = web3._requestManager
 
         self.defaultBlock = config.defaultBlock
         self.defaultAccount = DefaultAccount()  # config.defaultAccount
@@ -218,7 +219,7 @@ class Eth(object):
         raise NotImplementedError("TODO")
 
     def contract(self, abi, address=None):
-        return construct_contract_class(self, abi, address)
+        return construct_contract_class(self.web3, abi, address)
 
     def getCompilers(self):
         return self.request_manager.request_blocking("eth_getCompilers", [])
